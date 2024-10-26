@@ -11,16 +11,21 @@ class BooksData extends Model
     {
         return DB::insert("insert into booksdata (titlebook, authorbook) value (?, ?)", [$title, $author]);
     }
-
-    // Method to get all books
     public function getAllBooks()
     {
         return DB::select("select * from booksdata");
     }
-
-    // Method to get a single book by ID
     public function getBookById($id)
     {
         return DB::select("select * from booksdata where id = ?", [$id]);
+    }
+    public function updateBook($id, $title, $author)
+    {
+        return DB::update("update booksdata set titlebook = ?, authorbook = ? where id = ?", [$title, $author, $id]);
+    }
+
+    public function deleteBook($id)
+    {
+        return DB::delete("delete from booksdata where id = ?", [$id]);
     }
 }

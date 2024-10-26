@@ -61,9 +61,15 @@
         <div class="book-list">
             @foreach ($books as $book)
             <div class="book-card">
-                <p><strong>{{ $book['title'] }}</strong></p>
-                <p>by {{ $book['author'] }}</p>
+                <p><strong>{{ $book->titlebook }}</strong></p>
+                <p>by {{ $book->authorbook }}</p>
                 <a href="{{ route('books.show', $book->id) }}">View Details</a>
+                <a href="{{ route('books.edit', $book->id) }}">Edit</a>
+                <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
             </div>
             @endforeach
         </div>

@@ -31,7 +31,6 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255'
@@ -41,5 +40,32 @@ class BookController extends Controller
         $insert->insertBook($request->title, $request->author);
 
         return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan!');
+    }
+    public function edit($id)
+    {
+        $book = (new BooksData())->getBookById($id);
+        if (!$book) {
+            abort(404);
+        }
+        return view('books.edit', ['book' => $book[0]]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255'
+        ]);
+
+        (new BooksData())->updateBook($id, $request->title, $request->author);
+
+        return redirect()->route('books.index')->with('success', 'Buku berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        (new BooksData())->deleteBook($id);
+
+        return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus!');
     }
 }
